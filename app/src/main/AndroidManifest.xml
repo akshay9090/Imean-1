@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.arps.imean" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MeaningDisplay"
+            android:label="@string/title_activity_meaning_display" >
+        </activity>
+        <activity
+            android:name=".LabelWordList"
+            android:label="@string/title_activity_label_word_list" >
+        </activity>
+        <activity
+            android:name=".OneWordMeaning"
+            android:label="@string/title_activity_one_word_meaning" >
+        </activity>
+        <activity
+            android:name=".HomeScreen"
+            android:label="@string/title_activity_home_screen" >
+        </activity>
+    </application>
+
+</manifest>

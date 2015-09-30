@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Imean</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="message_text">HELLO ASS</string>
+    <string name="button_text">CLICK ME</string>
+    <string name="title_activity_scroll_screen">ScrollScreen</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="rishabh_button_2">NEXT ACTIVITY</string>
+    <string name="title_activity_meaning_display">MeaningDisplay</string>
+    <string name="title_activity_meaning_list">MeaningList</string>
+    <string name="title_activity_label_word_list">LabelWordList</string>
+    <string name="title_activity_one_word_meaning">OneWordMeaning</string>
+    <string name="title_activity_home_screen">HomeScreen</string>
+</resources>
