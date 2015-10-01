@@ -21,11 +21,12 @@ public class LabelWordList extends ActionBarActivity {
 
 
         String[] words = {"words1","word2","word3","word4"};
-        ListAdapter labelsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_activated_1,words);
-        ListView labelsListView = (ListView)findViewById(R.id.labelsListView);
-        labelsListView.setAdapter(labelsAdapter);
+        ListAdapter wordsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_activated_1,words);
+        ListView wordsListView = (ListView)findViewById(R.id.wordsListView);
 
-        labelsListView.setOnItemClickListener(
+        wordsListView.setAdapter(wordsAdapter);
+
+        wordsListView.setOnItemClickListener(
 
                 new AdapterView.OnItemClickListener() {
 

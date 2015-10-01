@@ -24,7 +24,7 @@ public class HomeScreen extends ActionBarActivity {
         setContentView(R.layout.activity_home_screen);
 
         //THE SEARCH EDIT TEXT
-        final String nullcheck = null;// A NULL STRING
+        final String nullcheck = "";// A NULL STRING
         final EditText searchEditText = (EditText)findViewById(R.id.searchEditText);
 
 
@@ -59,6 +59,8 @@ public class HomeScreen extends ActionBarActivity {
 
         ListAdapter labelsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_activated_1,labels);
         ListView labelsListView = (ListView)findViewById(R.id.labelsListView);
+
+
         labelsListView.setAdapter(labelsAdapter);
 
         labelsListView.setOnItemClickListener(
@@ -67,7 +69,7 @@ public class HomeScreen extends ActionBarActivity {
 
                     public void onItemClick(AdapterView<?> parent,View view, int position, long id) {
 
-                        String label = String.valueOf(parent.getItemAtPosition(position));
+                       // String label = String.valueOf(parent.getItemAtPosition(position));
                         Intent launchWordListIntent = new Intent(HomeScreen.this, LabelWordList.class);
                         startActivity(launchWordListIntent);
 

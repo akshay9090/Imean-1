@@ -4,7 +4,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.arps.imean.MeaningDisplay">
+    tools:context="com.arps.imean.MeaningDisplay"
+    android:background="#2F4F4F">
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -20,7 +21,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
             android:id="@+id/meaningTextView"
-            android:layout_gravity="left|top" />
+            android:layout_gravity="left|top"
+            android:background="#FFFAFA" />
     </FrameLayout>
 
     <EditText
@@ -39,7 +41,8 @@
         android:text="Enter label to store the word"
         android:id="@+id/addLabelMessage"
         android:layout_above="@+id/addLabelEditText"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#90EE90" />
 
     <Button
         android:layout_width="wrap_content"
@@ -47,6 +50,7 @@
         android:text="Add"
         android:id="@+id/addLabelButton"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="#90EE90" />
 
 </RelativeLayout>
