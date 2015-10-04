@@ -1,135 +1,126 @@
 package com.arps.imean;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
 /**
- * Created by rishabh on 3/10/15.
+ * Created by rishabh on 5/10/15.
  */
-public class MyDBHandler extends SQLiteOpenHelper{
 
-    private static final int DATABASE_VERSION = 1;
-
-    private static final String DATABASE_NAME = "imean1.db";
-
-    public static final String TABLE_WORDSANDLABELS = "imean1";
-
-    public static final String COLUMN_ID = "_id";
-
-    public static final String COLUMN_WORDS = "_word";
-
-    public static final String COLUMN_LABELS = "_label";
-
-    public static final String COLUMN_MEANINGS = "_meaning";
-
-    public static final String  TAG = "MyDBHandler";
+import android.database.sqlite.SQLiteOpenHelper;
 
 
-    public MyDBHandler(Context context,String name,SQLiteDatabase.CursorFactory factory,int version){
+        import android.content.ContentValues;
+        import android.content.Context;
+        import android.database.Cursor;
+        import android.database.DatabaseUtils;
+        import android.database.sqlite.SQLiteDatabase;
+        import android.database.sqlite.SQLiteOpenHelper;
 
-        super(context,DATABASE_NAME,factory,DATABASE_VERSION);
+        import java.util.ArrayList;
+
+public class MyDBHandler extends SQLiteOpenHelper {
+
+    public static final String DATABASE_NAME = "MyDB.db";
+    public static final String TABLE_NAME = "word_table";
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_WORD = "word";
+    public static final String COLUMN_MEANING = "meaning";
+    public static final String COLUMN_LABEL = "label";
+
+    public MyDBHandler(Context context)
+    {
+        super(context, DATABASE_NAME , null, 1);
     }
-
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-        Log.d(TAG,"onCreate of MyDbhandler started");
-
-        String query = "CREATE TABLE " + TABLE_WORDSANDLABELS + "(" +
-                COLUMN_ID + " integer primary key autoincrement," +
-                COLUMN_LABELS + " text," +
-                COLUMN_WORDS + " text," +
-                COLUMN_MEANINGS + " text " + ");" ;
-
-        db.execSQL(query);
-
-        Log.d(TAG, "onCreate of MyDbhandler completed");
-
-
+        // TODO Auto-generated method stub
+        db.execSQL(
+                "create table " + TABLE_NAME +
+                        "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_WORD + " text, " + COLUMN_MEANING + " text, " + COLUMN_LABEL + " text);"
+        );
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        Log.d(TAG,"onupgrade of MyDbhandler started");
-
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORDSANDLABELS + ";");
-
-        //now since an old redundant table with same name dropped, we can create new table
-
+        // TODO Auto-generated method stub
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
-
-        Log.d(TAG, "onUPgrade of MyDbhandler completed");
     }
 
-
-    //ADD A NEW ROW TO DATABASE
-    public void addRow(WordsAndLabels word){
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_WORDS,word.get_word());
-        values.put(COLUMN_LABELS, word.get_label());
-        values.put(COLUMN_MEANINGS, word.get_meaning());
-
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_WORDSANDLABELS, null, values);
-
-        db.close();
-
-
+    public boolean insertWord  (String word, String meaning, String label)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_WORD, word);
+        contentValues.put(COLUMN_MEANING, meaning);
+        contentValues.put(COLUMN_LABEL, label);
+        db.insert(TABLE_NAME, null, contentValues);
+        return true;
     }
 
-
-    //DELTE A ROW ROM DATABASE
-    public void deleteRow(String word){
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        db.execSQL("DELETE FROM " + TABLE_WORDSANDLABELS + " WHERE " + COLUMN_WORDS
-                + "=\"" + word + "\";");
+    public Cursor getData(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("select * from " + TABLE_NAME + " where " + COLUMN_ID + "=" + id + "", null);
     }
 
+    public int numberOfRows(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return (int) DatabaseUtils.queryNumEntries(db, TABLE_NAME);
+    }
 
-    //PRINT OUT THE DATABSE AS A STRING
-    public String databaseToString(){
+    public boolean updateWord (Integer id, String word, String meaning, String label)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_WORD, word);
+        contentValues.put(COLUMN_MEANING, meaning);
+        contentValues.put(COLUMN_LABEL, label);
+        db.update(TABLE_NAME, contentValues, COLUMN_ID + " = ? ", new String[] { Integer.toString(id) } );
+        return true;
+    }
 
-        String dbString = "";
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT "+COLUMN_WORDS+" FROM " + TABLE_WORDSANDLABELS + " WHERE 1 ;";
+    public Integer deleteWord (Integer id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME,
+                COLUMN_ID + " = ? ",
+                new String[] { Integer.toString(id) });
+    }
 
+    public ArrayList<String> getAllWords(String label)
+    {
+        ArrayList<String> array_list = new ArrayList<>();
 
-        //cursor to point to a location in results
-        Cursor c = db.rawQuery(query,null);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from " + TABLE_NAME + " WHERE " + COLUMN_LABEL + "=\"" + label + "\";", null );
+        res.moveToFirst();
 
-        //move to first line in results
-
-        c.moveToFirst();
-
-        //DOUBT
-        while(!c.isAfterLast()){
-
-            if(c.getString(c.getColumnIndex(COLUMN_WORDS))!=null){
-
-                dbString += c.getString(c.getColumnIndex(COLUMN_WORDS));
-
-                dbString += "\n";
-
-            }
+        while(!res.isAfterLast()){
+            array_list.add(res.getString(res.getColumnIndex(COLUMN_WORD)));
+            res.moveToNext();
         }
-
-        db.close();
-
-        return dbString;
-
+        res.close();
+        return array_list;
     }
 
+    public ArrayList<String> getAllLabels()
+    {
+        ArrayList<String> array_list = new ArrayList<>();
 
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select distinct" + COLUMN_LABEL + " from " + TABLE_NAME , null );
+        res.moveToFirst();
 
+        while(!res.isAfterLast()){
+            array_list.add(res.getString(res.getColumnIndex(COLUMN_LABEL)));
+            res.moveToNext();
+        }
+        res.close();
+        return array_list;
+    }
 
+    public String getMeaning(String word){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery( "select * from " + TABLE_NAME + " WHERE " + COLUMN_WORD + "=\"" + word + "\";", null );
+        return res.getString(res.getColumnIndex(COLUMN_MEANING));
+    }
 }

@@ -15,8 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 
 public class HomeScreen extends ActionBarActivity {
+
+    MyDBHandler myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class HomeScreen extends ActionBarActivity {
 
                             //MEANING ACTIVITY LAUNCHED
                             Intent launchMeaningIntent = new Intent(HomeScreen.this, MeaningDisplay.class);
+                            launchMeaningIntent.putExtra("search",searchEditText.getText().toString());
                             startActivity(launchMeaningIntent);
                         }
                     }
@@ -57,12 +62,15 @@ public class HomeScreen extends ActionBarActivity {
 
         String[] labels = {"positive words","negative words","harsh words","physical description"};
 
-        ListAdapter labelsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_activated_1,labels);
+        myDB = new MyDBHandler(this);
+
+        ArrayList<String> labelList = myDB.getAllLabels();
+
+        ArrayAdapter<String> labelsAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,labelList);
+
+
         ListView labelsListView = (ListView)findViewById(R.id.labelsListView);
-
-
         labelsListView.setAdapter(labelsAdapter);
-
         labelsListView.setOnItemClickListener(
 
                 new AdapterView.OnItemClickListener() {
