@@ -44,6 +44,11 @@
         android:layout_below="@+id/frameLayout2"
         android:background="#FFF5EE">
 
+        <ScrollView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelsScrollView"
+            >
+        </ScrollView>
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="388dp"

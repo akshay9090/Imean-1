@@ -1,17 +1,32 @@
 package com.arps.imean;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
 public class OneWordMeaning extends ActionBarActivity {
 
+    MyDBHandler myDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_word_meaning);
+
+        Intent incomingIntent = getIntent();
+        final String word = incomingIntent.getStringExtra("word");
+
+        myDB = new MyDBHandler(this);
+
+        final String meaning = myDB.getMeaning(word);
+
+        TextView meaningTextView = (TextView)findViewById(R.id.meaningTextView);
+        meaningTextView.setText(word+"\n"+"Meaning: "+meaning);
+
+
     }
 
     @Override

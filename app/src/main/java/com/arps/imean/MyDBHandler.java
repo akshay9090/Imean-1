@@ -107,7 +107,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         ArrayList<String> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select distinct" + COLUMN_LABEL + " from " + TABLE_NAME , null );
+        Cursor res =  db.rawQuery( "select distinct " + COLUMN_LABEL + " from " + TABLE_NAME , null );
         res.moveToFirst();
 
         while(!res.isAfterLast()){
@@ -119,8 +119,19 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     public String getMeaning(String word){
+
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery( "select * from " + TABLE_NAME + " WHERE " + COLUMN_WORD + "=\"" + word + "\";", null );
-        return res.getString(res.getColumnIndex(COLUMN_MEANING));
+        String meaning = new String();
+        Cursor res = db.rawQuery( "select " + COLUMN_MEANING +" from " + TABLE_NAME + " WHERE " + COLUMN_WORD + " = '" + word + "';", null );
+        meaning = res.getString(0);
+       /* while(res.moveToFirst()){
+
+            meaning = res.getString(res.getColumnIndex(COLUMN_MEANING)).toString();
+            res.moveToNext();
+        }*/
+        res.close();
+
+        return meaning;
+        //return res.getString(res.getColumnIndex(COLUMN_MEANING));
     }
 }

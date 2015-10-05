@@ -11,20 +11,34 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 
 public class LabelWordList extends ActionBarActivity {
 
+    MyDBHandler myDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_label_word_list);
 
+        //incoming intent
+        Intent incomingIntent = getIntent();
+        final String label = incomingIntent.getStringExtra("label");
 
-        String[] words = {"words1","word2","word3","word4"};
-        ListAdapter wordsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_activated_1,words);
+
+
+        //String[] words = {"words1","word2","word3","word4"};
+        myDB = new MyDBHandler(this);
+
+        ArrayList<String> wordList = myDB.getAllWords(label);
+        ArrayAdapter<String> wordsAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,wordList);
         ListView wordsListView = (ListView)findViewById(R.id.wordsListView);
-
         wordsListView.setAdapter(wordsAdapter);
+
+        //ListAdapter wordsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_activated_1,words);
+        //ListView wordsListView = (ListView)findViewById(R.id.wordsListView);
+        //wordsListView.setAdapter(wordsAdapter);
 
         wordsListView.setOnItemClickListener(
 
@@ -34,6 +48,7 @@ public class LabelWordList extends ActionBarActivity {
 
                         String word = String.valueOf(parent.getItemAtPosition(position));
                         Intent changeScreenIntent3 = new Intent(LabelWordList.this, OneWordMeaning.class);
+                        changeScreenIntent3.putExtra("word", word);
                         startActivity(changeScreenIntent3);
 
                     }

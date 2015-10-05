@@ -21,7 +21,7 @@ public class MeaningDisplay extends ActionBarActivity{
     EditText addLabelEditText;
     Button addLabelButton;
     TextView meaningTextView;
-    SQLiteDatabase db;
+    MyDBHandler myDB;
 
 
     @Override
@@ -38,10 +38,10 @@ public class MeaningDisplay extends ActionBarActivity{
         Intent incomingIntent = getIntent();
         final String search = incomingIntent.getStringExtra("search");
 
-
-       db = openOrCreateDatabase("imeanDB", Context.MODE_PRIVATE,null);
-        db.execSQL("DROP TABLE IF EXISTS words");
-        db.execSQL("CREATE TABLE IF NOT EXISTS words(_word VARCHAR, _meaning VARCHAR, _label VARCHAR);");
+        myDB = new MyDBHandler(this);
+        // db = openOrCreateDatabase("imeanDB", Context.MODE_PRIVATE,null);
+        //db.execSQL("DROP TABLE IF EXISTS words");
+        //db.execSQL("CREATE TABLE IF NOT EXISTS words(_word VARCHAR, _meaning VARCHAR, _label VARCHAR);");
 
         meaningTextView.setText("");
 
@@ -60,11 +60,13 @@ public class MeaningDisplay extends ActionBarActivity{
                         //Toast.makeText(MeaningDisplay.this, "button clicked", Toast.LENGTH_SHORT).show();
                         String newLabel = addLabelEditText.getText().toString();
                         String newMeaning = "meaning to be added";
-                        db.execSQL("INSERT INTO words(_word, _meaning, _label) VALUES('"+search+"','"+newLabel+"','"+newMeaning+"');");
+                        myDB.insertWord(search, newMeaning, newLabel);
+                        //db.execSQL("INSERT INTO words(_word, _meaning, _label) VALUES('"+search+"','"+newLabel+"','"+newMeaning+"');");
+                        Intent launchLabelListIntent = new Intent(MeaningDisplay.this, HomeScreen.class);
+                        startActivity(launchLabelListIntent);
 
-
-                        printDatabase();
-                       // Toast.makeText(MeaningDisplay.this, "word added", Toast.LENGTH_SHORT).show();
+                        //Database();
+                        // Toast.makeText(MeaningDisplay.this, "word added", Toast.LENGTH_SHORT).show();
 
 
                     }
@@ -78,11 +80,11 @@ public class MeaningDisplay extends ActionBarActivity{
 
     }
 
-    public void printDatabase(){
+    /*public void printDatabase(){
 
         //Toast.makeText(MeaningDisplay.this, "edsaafafa", Toast.LENGTH_SHORT).show();
 
-        Cursor c=db.rawQuery("SELECT * FROM words", null);
+        Cursor c=m.rawQuery("SELECT * FROM words", null);
         if(c.getCount()==0)
         {
             Toast.makeText(MeaningDisplay.this, "error,no word found", Toast.LENGTH_SHORT).show();
@@ -100,7 +102,7 @@ public class MeaningDisplay extends ActionBarActivity{
         addLabelEditText.setText("");
 
 
-    }
+    }*/
 
    /* public void addButtonCLicked(View view){
 

@@ -60,7 +60,7 @@ public class HomeScreen extends ActionBarActivity {
                 }
         );
 
-        String[] labels = {"positive words","negative words","harsh words","physical description"};
+        //String[] labels = {"positive words","negative words","harsh words","physical description"};
 
         myDB = new MyDBHandler(this);
 
@@ -77,8 +77,9 @@ public class HomeScreen extends ActionBarActivity {
 
                     public void onItemClick(AdapterView<?> parent,View view, int position, long id) {
 
-                       // String label = String.valueOf(parent.getItemAtPosition(position));
+                        String label = String.valueOf(parent.getItemAtPosition(position));
                         Intent launchWordListIntent = new Intent(HomeScreen.this, LabelWordList.class);
+                        launchWordListIntent.putExtra("label",label);
                         startActivity(launchWordListIntent);
 
                     }
