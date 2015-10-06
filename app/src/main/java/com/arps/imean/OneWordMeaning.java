@@ -3,6 +3,7 @@ package com.arps.imean;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -24,7 +25,10 @@ public class OneWordMeaning extends ActionBarActivity {
         final String meaning = myDB.getMeaning(word);
 
         TextView meaningTextView = (TextView)findViewById(R.id.meaningTextView);
-        meaningTextView.setText(word+"\n"+"Meaning: "+meaning);
+        meaningTextView.setText(word+"\n\n ------------------- \n"+"Meaning: "+meaning);
+
+        //making text view scrollable
+        meaningTextView.setMovementMethod(new ScrollingMovementMethod());
 
 
     }

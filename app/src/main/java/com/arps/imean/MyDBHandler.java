@@ -122,13 +122,14 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         String meaning = new String();
-        Cursor res = db.rawQuery( "select " + COLUMN_MEANING +" from " + TABLE_NAME + " WHERE " + COLUMN_WORD + " = '" + word + "';", null );
-        meaning = res.getString(0);
-       /* while(res.moveToFirst()){
+        Cursor res = db.rawQuery( "select * from " + TABLE_NAME + " WHERE " + COLUMN_WORD + " = \"" + word + "\";", null );
+        //meaning = res.getString(0);
+        res.moveToFirst();
+        while(!res.isAfterLast()){
 
-            meaning = res.getString(res.getColumnIndex(COLUMN_MEANING)).toString();
+            meaning = res.getString(res.getColumnIndex(COLUMN_MEANING));
             res.moveToNext();
-        }*/
+        }
         res.close();
 
         return meaning;
