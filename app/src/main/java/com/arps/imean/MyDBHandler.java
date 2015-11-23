@@ -25,9 +25,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_MEANING = "meaning";
     public static final String COLUMN_LABEL = "label";
 
-    public MyDBHandler(Context context)
-    {
-        super(context, DATABASE_NAME , null, 1);
+    public MyDBHandler(Context context) {
+        super(context, DATABASE_NAME, null, 1);
     }
 
     @Override
@@ -46,8 +45,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertWord  (String word, String meaning, String label)
-    {
+    public boolean insertWord(String word, String meaning, String label) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_WORD, word);
@@ -57,44 +55,47 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return true;
     }
 
-    public Cursor getData(int id){
+    public Cursor getData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("select * from " + TABLE_NAME + " where " + COLUMN_ID + "=" + id + "", null);
+        return db.rawQuery("select * from " + TABLE_NAME + " where " + COLUMN_ID + "=" + id + ";", null);
     }
 
-    public int numberOfRows(){
+    public int numberOfRows() {
         SQLiteDatabase db = this.getReadableDatabase();
         return (int) DatabaseUtils.queryNumEntries(db, TABLE_NAME);
     }
 
-    public boolean updateWord (Integer id, String word, String meaning, String label)
-    {
+    public boolean updateWord(String word, String meaning, String label) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_WORD, word);
-        contentValues.put(COLUMN_MEANING, meaning);
+        //contentValues.put(COLUMN_MEANING, meaning);
         contentValues.put(COLUMN_LABEL, label);
-        db.update(TABLE_NAME, contentValues, COLUMN_ID + " = ? ", new String[] { Integer.toString(id) } );
+        db.update(TABLE_NAME, contentValues, COLUMN_WORD + " = ? ", new String[]{word});
         return true;
     }
 
-    public Integer deleteWord (Integer id)
-    {
+    public Integer deleteWord(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_NAME,
                 COLUMN_ID + " = ? ",
-                new String[] { Integer.toString(id) });
+                new String[]{Integer.toString(id)});
+    }
+    public Integer deleteWord(String word) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME,
+                COLUMN_WORD + " = ? ",
+                new String[]{word});
     }
 
-    public ArrayList<String> getAllWords(String label)
-    {
+    public ArrayList<String> getAllWords(String label) {
         ArrayList<String> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " + TABLE_NAME + " WHERE " + COLUMN_LABEL + "=\"" + label + "\";", null );
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " WHERE " + COLUMN_LABEL + "=\"" + label + "\" ORDER BY " + COLUMN_WORD + ";", null);
         res.moveToFirst();
 
-        while(!res.isAfterLast()){
+        while (!res.isAfterLast()) {
             array_list.add(res.getString(res.getColumnIndex(COLUMN_WORD)));
             res.moveToNext();
         }
@@ -102,15 +103,14 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return array_list;
     }
 
-    public ArrayList<String> getAllLabels()
-    {
+    public ArrayList<String> getAllLabels() {
         ArrayList<String> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select distinct " + COLUMN_LABEL + " from " + TABLE_NAME , null );
+        Cursor res = db.rawQuery("select distinct " + COLUMN_LABEL + " from " + TABLE_NAME + " order by " + COLUMN_LABEL + ";", null);
         res.moveToFirst();
 
-        while(!res.isAfterLast()){
+        while (!res.isAfterLast()) {
             array_list.add(res.getString(res.getColumnIndex(COLUMN_LABEL)));
             res.moveToNext();
         }
@@ -118,6 +118,25 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return array_list;
     }
 
+    public String searchWord(String word) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String find = new String();
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME + ";", null);
+
+        res.moveToFirst();
+        while(!res.isAfterLast()){
+
+           if( word.equals(res.getString(res.getColumnIndex(COLUMN_WORD)))){
+               find = res.getString(res.getColumnIndex(COLUMN_LABEL));
+               break;
+           }
+            res.moveToNext();
+        }
+        res.close();
+
+        return find;
+
+    }
     public String getMeaning(String word){
 
         SQLiteDatabase db = this.getReadableDatabase();

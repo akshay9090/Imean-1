@@ -1,6 +1,7 @@
 package com.arps.imean;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -48,12 +49,22 @@ public class HomeScreen extends ActionBarActivity {
                             // TOAST
                             Toast.makeText(HomeScreen.this, "enter a word to search for", Toast.LENGTH_LONG).show();
 
-                        } else {
+                        }
+                        else{
 
-                            //MEANING ACTIVITY LAUNCHED
-                            Intent launchMeaningIntent = new Intent(HomeScreen.this, MeaningDisplay.class);
-                            launchMeaningIntent.putExtra("search",searchEditText.getText().toString());
-                            startActivity(launchMeaningIntent);
+                            String flabel = myDB.searchWord(searchEditText.getText().toString());
+
+                            if (!nullcheck.equals(flabel)) {
+
+                                // TOAST
+                                Toast.makeText(HomeScreen.this, "word already exists in " + flabel, Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                //MEANING ACTIVITY LAUNCHED
+                                Intent launchMeaningIntent = new Intent(HomeScreen.this, MeaningDisplay.class);
+                                launchMeaningIntent.putExtra("search", searchEditText.getText().toString());
+                                startActivity(launchMeaningIntent);
+                            }
                         }
                     }
 
@@ -71,6 +82,27 @@ public class HomeScreen extends ActionBarActivity {
 
         ListView labelsListView = (ListView)findViewById(R.id.labelsListView);
         labelsListView.setAdapter(labelsAdapter);
+
+
+
+
+        labelsListView.setOnItemLongClickListener(
+
+                new AdapterView.OnItemLongClickListener() {
+
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        String star = String.valueOf(parent.getItemAtPosition(position));
+                        Intent launchWordListIntent = new Intent(HomeScreen.this, LabelWordList.class);
+                        launchWordListIntent.putExtra("star", star);
+                        startActivity(launchWordListIntent);
+
+                        return true;
+                    }
+
+                }
+
+        );
         labelsListView.setOnItemClickListener(
 
                 new AdapterView.OnItemClickListener() {

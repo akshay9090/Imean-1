@@ -27,13 +27,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="289dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Large Text"
                 android:id="@+id/meaningTextView"
                 android:layout_gravity="left|top"
                 android:maxLines = "35"
                 android:scrollbars = "vertical"
                 android:background="#FFFAFA"
-                android:focusableInTouchMode="true" />
+                android:focusableInTouchMode="false"
+                android:focusable="false" />
 
     </FrameLayout>
 
@@ -56,7 +56,8 @@
                 android:layout_marginBottom="68dp"
                 android:layout_gravity="center_horizontal|bottom"
                 android:focusableInTouchMode="true"
-                android:textColor="#FFFAFA" />
+                android:textColor="#FFFAFA"
+                android:focusable="true" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -67,7 +68,8 @@
                 android:layout_centerHorizontal="true"
                 android:background="#90EE90"
                 android:layout_gravity="center_horizontal|bottom"
-                android:focusableInTouchMode="true" />
+                android:focusableInTouchMode="false"
+                android:focusable="false" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -78,7 +80,9 @@
                 android:layout_above="@+id/addLabelEditText"
                 android:layout_centerHorizontal="true"
                 android:textColor="#90EE90"
-                android:layout_gravity="center_horizontal|top" />
+                android:layout_gravity="center_horizontal|top"
+                android:focusable="false"
+                android:focusableInTouchMode="false" />
         </RelativeLayout>
     </FrameLayout>
 

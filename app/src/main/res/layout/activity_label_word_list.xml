@@ -21,7 +21,9 @@
             android:text="Mail this WordList"
             android:id="@+id/mailListButton"
             android:layout_gravity="center"
-            android:background="#90EE90" />
+            android:background="#90EE90"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
     </FrameLayout>
 
     <FrameLayout
@@ -36,6 +38,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/wordsListView"
-            android:layout_gravity="center_horizontal|top" />
+            android:layout_gravity="center_horizontal|top"
+            android:focusableInTouchMode="false"
+            android:focusable="false" />
     </FrameLayout>
 </RelativeLayout>
